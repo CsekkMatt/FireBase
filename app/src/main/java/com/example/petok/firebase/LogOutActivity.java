@@ -1,5 +1,6 @@
 package com.example.petok.firebase;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,6 +32,7 @@ public class LogOutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log_out);
 
         button = (Button) findViewById(R.id.logout);
+        Button btnList = (Button) findViewById(R.id.list);
         mAuth = FirebaseAuth.getInstance();
         myUser = mAuth.getCurrentUser();
         final String ui = myUser.getEmail();
@@ -51,6 +53,15 @@ public class LogOutActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mAuth.signOut();
+            }
+        });
+
+        btnList.setOnClickListener(new View.OnClickListener(){
+            @Override
+
+            public void onClick(View view){
+                startActivity(new Intent(LogOutActivity.this,MainActivity.class));
+
             }
         });
     }
