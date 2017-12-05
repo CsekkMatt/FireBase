@@ -26,7 +26,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
         FirebaseAuth mAuth;
-        SignInButton button;
+        SignInButton btn;
         Splash button;
         GoogleApiClient mGoogleApiClient;
         private final static int RC_SIGN_IN = 2;
@@ -45,10 +45,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        button = (SignInButton) findViewById(R.id.googleBtn);
+        btn = (SignInButton) findViewById(R.id.googleBtn);
         mAuth = FirebaseAuth.getInstance();
 
-        button.setOnClickListener(new View.OnClickListener(){
+        btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 signIn();
@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        Log.d("TAG", "firebaseAuthWithGoogle:" + account.getId());
+       // Log.d("TAG", "firebaseAuthWithGoogle:" + account.getId());
 
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
