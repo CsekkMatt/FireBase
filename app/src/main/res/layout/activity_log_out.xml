@@ -34,7 +34,7 @@
         android:layout_marginStart="16dp"
         android:background="@android:drawable/alert_dark_frame"
         android:backgroundTint="@color/common_google_signin_btn_text_dark_default"
-        android:text="List"
+        android:text="ADD"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
