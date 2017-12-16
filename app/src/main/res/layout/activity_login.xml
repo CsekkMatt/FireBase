@@ -25,7 +25,7 @@
         app:layout_constraintVertical_bias="1.0"></com.google.android.gms.common.SignInButton>
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/loginEmailField"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/loginPasswordField"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
@@ -71,7 +71,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/fbbtn"
+        android:layout_width="165dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="13dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="456dp"
+        android:text="Guest"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/loginBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="200dp"
@@ -81,20 +94,22 @@
         android:text="Login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/fbbtn"
-        android:layout_width="165dp"
-        android:layout_height="42dp"
-        android:layout_marginBottom="13dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="456dp"
-        android:text="Guest"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/register"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="80dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="68dp"
+        android:text="New Account"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.941" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
 
 </android.support.constraint.ConstraintLayout>

@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -23,6 +26,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -30,6 +38,13 @@ public class LoginActivity extends AppCompatActivity {
         SignInButton btn;
         GoogleApiClient mGoogleApiClient;
         private final static int RC_SIGN_IN = 2;
+
+        private EditText mLoginEmailField;
+        private EditText mLoginPasswordField;
+        private Button mLoginButton;
+
+        private DatabaseReference mDatabase;
+
 
         FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -45,9 +60,24 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        btn = (SignInButton) findViewById(R.id.googleBtn);
-        Button fbbtn = (Button)findViewById(R.id.fbbtn);
+        btn  = (SignInButton) findViewById(R.id.googleBtn);
+        Button guestbtn = (Button)findViewById(R.id.fbbtn);
+        Button registerBtn = (Button)findViewById(R.id.register);
         mAuth = FirebaseAuth.getInstance();
+        //login
+        mLoginPasswordField = (EditText)findViewById(R.id.loginPasswordField);
+        mLoginEmailField = (EditText)findViewById(R.id.loginEmailField);
+
+        mLoginButton =  (Button)findViewById(R.id.loginBtn);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        mLoginButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                checkLogin();
+            }
+        });
 
         btn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -55,20 +85,27 @@ public class LoginActivity extends AppCompatActivity {
                 signIn();
             }
         });
-        fbbtn.setOnClickListener(new View.OnClickListener() {
+        guestbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this,HomeActivity.class));
             }
         });
 
-
+        registerBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+            }
+        });
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                     if(firebaseAuth.getCurrentUser() != null){
                         startActivity(new Intent(LoginActivity.this,LogOutActivity.class));
                     }
+
+
             }
         };
 
@@ -86,6 +123,43 @@ public class LoginActivity extends AppCompatActivity {
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
                 .build();
+    }
+
+    private void checkLogin() {
+        String email = mLoginEmailField.getText().toString().trim();
+        String password = mLoginPasswordField.getText().toString().trim();
+        if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)){
+            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        checkUserExist();
+                    }
+                    else{
+                        Toast.makeText(LoginActivity.this,"Error login",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+        }
+    }
+
+    private void checkUserExist() {
+        final String user_id  = mAuth.getCurrentUser().getUid();
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild(user_id)){
+                    startActivity(new Intent(LoginActivity.this,LogOutActivity.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(LoginActivity.this,"You need to setup your account",Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     private void signIn() {
