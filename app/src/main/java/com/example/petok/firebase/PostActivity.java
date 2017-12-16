@@ -101,7 +101,7 @@ public class PostActivity extends AppCompatActivity {
 
                     mProgress.dismiss();
 
-                    startActivity(new Intent(PostActivity.this,LogOutActivity.class));
+                    startActivity(new Intent(PostActivity.this,HomeActivity.class));
                 }
             });
         }

@@ -72,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
                             current_user_db.child("image").setValue("default");
 
                             mProgress.dismiss();
-                            startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
+                            startActivity(new Intent(RegisterActivity.this,HomeActivity.class));
                         }
                     }
                 });

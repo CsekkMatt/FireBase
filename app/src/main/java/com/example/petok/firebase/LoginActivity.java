@@ -1,5 +1,6 @@
 package com.example.petok.firebase;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -44,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         private Button mLoginButton;
 
         private DatabaseReference mDatabase;
-
+        private ProgressDialog mProgress;
 
         FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -59,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mProgress = new ProgressDialog(this);
 
         btn  = (SignInButton) findViewById(R.id.googleBtn);
         Button guestbtn = (Button)findViewById(R.id.fbbtn);
@@ -102,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                     if(firebaseAuth.getCurrentUser() != null){
-                        startActivity(new Intent(LoginActivity.this,LogOutActivity.class));
+                        startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                     }
 
 
@@ -145,17 +147,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkUserExist() {
+        mProgress.setMessage("Logging in...");
+        mProgress.show();
         final String user_id  = mAuth.getCurrentUser().getUid();
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChild(user_id)){
-                    startActivity(new Intent(LoginActivity.this,LogOutActivity.class));
+                    mProgress.dismiss();
+                    startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                mProgress.dismiss();
                 Toast.makeText(LoginActivity.this,"You need to setup your account",Toast.LENGTH_SHORT).show();
 
             }

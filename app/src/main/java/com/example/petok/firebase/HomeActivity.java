@@ -1,17 +1,23 @@
 package com.example.petok.firebase;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -20,6 +26,9 @@ import com.squareup.picasso.Picasso;
 public class HomeActivity extends AppCompatActivity {
 
     private RecyclerView mPostList;
+    FirebaseAuth mAuth;
+    FirebaseAuth.AuthStateListener mAuthListener;
+
 
     private DatabaseReference mDatabase;
 
@@ -27,16 +36,62 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        mAuth = FirebaseAuth.getInstance();
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Post");
+
 
         mPostList = (RecyclerView) findViewById(R.id.post_list);
         mPostList.setHasFixedSize(true);
         mPostList.setLayoutManager(new LinearLayoutManager(this));
 
+
     }
 
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem addPost = menu.findItem(R.id.action_add);
+        MenuItem logOut = menu.findItem(R.id.action_logout);
+        MenuItem logIn = menu.findItem(R.id.action_login);
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            addPost.setVisible(false);
+            logIn.setVisible(true);
+            logOut.setVisible(false);
+
+
+        }
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            logIn.setVisible(false);
+
+        }
+
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_add){
+            startActivity(new Intent(HomeActivity.this,PostActivity.class));
+        }
+        if(item.getItemId() == R.id.action_logout){
+            mAuth.signOut();
+            startActivity(new Intent(HomeActivity.this,LoginActivity.class));
+        }
+        if(item.getItemId() == R.id.action_login){
+            startActivity(new Intent(HomeActivity.this,LoginActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onStart(){
@@ -57,7 +112,6 @@ public class HomeActivity extends AppCompatActivity {
                 viewHolder.setImage(getApplicationContext(),model.getImage());
                // Log.i("TAG", "Cim:" + model.getImage() );
 
-                Toast.makeText(HomeActivity.this,model.getImage().toString(),Toast.LENGTH_SHORT).show();
 
             }
         };
