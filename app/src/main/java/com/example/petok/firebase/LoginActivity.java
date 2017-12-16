@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         btn = (SignInButton) findViewById(R.id.googleBtn);
+        Button fbbtn = (Button)findViewById(R.id.fbbtn);
         mAuth = FirebaseAuth.getInstance();
 
         btn.setOnClickListener(new View.OnClickListener(){
@@ -53,6 +55,13 @@ public class LoginActivity extends AppCompatActivity {
                 signIn();
             }
         });
+        fbbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+            }
+        });
+
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override

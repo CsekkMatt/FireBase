@@ -6,9 +6,11 @@
     tools:context="com.example.petok.firebase.HomeActivity">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/post_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/post_list"></android.support.v7.widget.RecyclerView>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"></android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
 
