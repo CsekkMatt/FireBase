@@ -1,6 +1,5 @@
 package com.example.petok.firebase;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -45,7 +44,7 @@ public class LogOutActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() == null){
 
-                    startActivity(new Intent(LogOutActivity.this,LoginActivity.class));
+                    startActivity(new Intent(LogOutActivity.this,HomeActivity.class));
                 }
             }
         };
@@ -60,7 +59,7 @@ public class LogOutActivity extends AppCompatActivity {
             @Override
 
             public void onClick(View view){
-                startActivity(new Intent(LogOutActivity.this,MainActivity.class));
+                startActivity(new Intent(LogOutActivity.this,PostActivity.class));
 
             }
         });

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/common_google_signin_btn_text_dark_disabled"
-    tools:context="com.example.petok.firebase.MainActivity">
+    tools:context="com.example.petok.firebase.PostActivity">
 
 
     <ImageButton
@@ -16,13 +16,12 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@drawable/add_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:color/background_light" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/titleField"
