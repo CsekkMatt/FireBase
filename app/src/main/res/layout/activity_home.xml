@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     tools:context="com.example.petok.firebase.HomeActivity">
 
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/post_list"
         android:layout_width="match_parent"
