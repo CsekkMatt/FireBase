@@ -2,20 +2,20 @@ package com.example.petok.firebase;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.firebase.client.Firebase;
+import com.google.firebase.database.Query;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +28,8 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView mPostList;
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
-
+    private EditText mSearchField;
+    private ImageButton mImageButton;
 
     private DatabaseReference mDatabase;
 
@@ -40,14 +41,50 @@ public class HomeActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Post");
 
-
+        mSearchField = (EditText) findViewById(R.id.searchField);
+        mImageButton = (ImageButton)findViewById(R.id.imgBtn);
         mPostList = (RecyclerView) findViewById(R.id.post_list);
         mPostList.setHasFixedSize(true);
         mPostList.setLayoutManager(new LinearLayoutManager(this));
 
 
+        mImageButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                    String searchText = mSearchField.getText().toString();
+                 Toast.makeText(HomeActivity.this,searchText,Toast.LENGTH_SHORT).show();
+                    firebaseUserSearch(searchText);
+                }
+        });
+
     }
 
+    private void firebaseUserSearch(String searchText) {
+
+        Query firebaseSearchQuery = mDatabase.orderByChild("Title").startAt(searchText).endAt(searchText + "\uf8ff");
+
+
+        FirebaseRecyclerAdapter<Post,BlogViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Post,BlogViewHolder>(
+                Post.class,
+                R.layout.post_row,
+                BlogViewHolder.class,
+                firebaseSearchQuery
+
+        ){
+            @Override
+            protected void populateViewHolder(BlogViewHolder viewHolder, Post model,int position){
+
+                viewHolder.setTitle(model.getTitle());
+                viewHolder.setDesc(model.getDesc());
+                viewHolder.setImage(getApplicationContext(),model.getImage());
+
+
+            }
+        };
+
+        mPostList.setAdapter(firebaseRecyclerAdapter);
+
+    }
 
 
     @Override
@@ -110,7 +147,6 @@ public class HomeActivity extends AppCompatActivity {
                 viewHolder.setTitle(model.getTitle());
                 viewHolder.setDesc(model.getDesc());
                 viewHolder.setImage(getApplicationContext(),model.getImage());
-               // Log.i("TAG", "Cim:" + model.getImage() );
 
 
             }
