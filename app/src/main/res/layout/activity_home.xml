@@ -32,10 +32,13 @@
         android:id="@+id/imgBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/searchField"
-        android:layout_marginStart="41dp"
+        android:layout_above="@+id/post_list"
+        android:layout_alignTop="@+id/searchField"
+        android:layout_marginStart="19dp"
         android:layout_toEndOf="@+id/searchField"
-        app:srcCompat="@drawable/search" android:contentDescription="@string/todo" />
+        android:background="@color/colorPrimary"
+        android:contentDescription="@string/todo"
+        app:srcCompat="@drawable/search" />
 
 </RelativeLayout>
 

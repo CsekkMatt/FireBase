@@ -52,6 +52,9 @@
         android:background="@color/colorPrimary"
         android:padding="20dp"
         android:text="Sign Up"
-        app:layout_constraintTop_toBottomOf="@+id/passwordField"
-        tools:layout_editor_absoluteX="145dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordField" />
 </android.support.constraint.ConstraintLayout>
