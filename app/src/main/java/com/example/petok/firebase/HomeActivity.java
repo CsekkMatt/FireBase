@@ -73,10 +73,19 @@ public class HomeActivity extends AppCompatActivity {
         ){
             @Override
             protected void populateViewHolder(BlogViewHolder viewHolder, Post model,int position){
+                final String post_key = getRef(position).toString();
 
                 viewHolder.setTitle(model.getTitle());
                 viewHolder.setDesc(model.getDesc());
                 viewHolder.setImage(getApplicationContext(),model.getImage());
+
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent singlePostIntent = new Intent(HomeActivity.this,PostSingleActivity.class);
+                        singlePostIntent.putExtra("post_id",post_key);
+                        startActivity(singlePostIntent);                    }
+                });
 
 
             }
@@ -144,9 +153,24 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             protected void populateViewHolder(BlogViewHolder viewHolder, Post model,int position){
 
+                final String post_key = getRef(position).toString();
+
+
+
                 viewHolder.setTitle(model.getTitle());
                 viewHolder.setDesc(model.getDesc());
                 viewHolder.setImage(getApplicationContext(),model.getImage());
+
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                       // Toast.makeText(HomeActivity.this,post_key,Toast.LENGTH_SHORT).show();
+
+                        Intent singlePostIntent = new Intent(HomeActivity.this,PostSingleActivity.class);
+                        singlePostIntent.putExtra("post_id",post_key);
+                        startActivity(singlePostIntent);
+                    }
+                });
 
 
             }
@@ -156,13 +180,15 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public static class BlogViewHolder extends RecyclerView.ViewHolder{
+    public static class BlogViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         View mView;
 
         public BlogViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
+
+
         }
         public void setTitle(String title){
             TextView post_title =(TextView)mView.findViewById(R.id.post_title);
@@ -175,12 +201,14 @@ public class HomeActivity extends AppCompatActivity {
 
         public void setImage(Context ctx, String image){
 
-            //Log.i("TAG", "Cim:" + image );
-
-
             ImageView post_image = (ImageView)mView.findViewById(R.id.post_image);
             Picasso.with(ctx).load(image).into(post_image);
 
+
+        }
+
+        @Override
+        public void onClick(View v) {
 
         }
     }
