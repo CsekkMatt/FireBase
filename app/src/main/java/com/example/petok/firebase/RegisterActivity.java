@@ -71,6 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
                             DatabaseReference current_user_db =  mDatabase.child(user_id);
                             current_user_db.child("name").setValue(name);
                             current_user_db.child("image").setValue("default");
+                            current_user_db.child("phone").setValue("default");
 
                             mProgress.dismiss();
                             startActivity(new Intent(RegisterActivity.this,HomeActivity.class));

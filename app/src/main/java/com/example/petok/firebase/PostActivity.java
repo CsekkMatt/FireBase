@@ -3,6 +3,7 @@ package com.example.petok.firebase;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,10 +12,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -23,8 +31,11 @@ public class PostActivity extends AppCompatActivity {
 
     private static final String TAG = "";
     private DatabaseReference mDatabase;
+    private DatabaseReference mDatabaseUsers;
+    GoogleApiClient mGoogleApiClient;
 
-//https://console.cloud.google.com/storage/settings?project=fir-4f1d6
+
+    //https://console.cloud.google.com/storage/settings?project=fir-4f1d6
     private ImageButton mSelectImage;
     private EditText mPostTitle;
     private EditText mPostDesc;
@@ -51,6 +62,7 @@ public class PostActivity extends AppCompatActivity {
 
         mStorage = FirebaseStorage.getInstance().getReference();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Post");
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
 
@@ -73,6 +85,8 @@ public class PostActivity extends AppCompatActivity {
            }
        });
 
+
+
     }
 
     private void startPosting() {
@@ -80,7 +94,8 @@ public class PostActivity extends AppCompatActivity {
         mProgress.setMessage("Uploading...");
         final String title_val = mPostTitle.getText().toString().trim();
         final String desc_val = mPostDesc.getText().toString().trim();
-        final String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid().toString().trim();
+       // final String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
 
 
         if(!TextUtils.isEmpty(title_val) && !TextUtils.isEmpty(desc_val) && mImageUri != null){
@@ -90,18 +105,37 @@ public class PostActivity extends AppCompatActivity {
             filepath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                    DatabaseReference newPost  = mDatabase.push();
+                   final Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                   final DatabaseReference newPost  = mDatabase.push();
 
-                    newPost.child("Title").setValue(title_val);
-                    newPost.child("Desc").setValue(desc_val);
-                    newPost.child("image").setValue(downloadUrl.toString());
-                   // newPost.child("email").setValue(email);
-                  //  newPost.child("uid").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
 
+                    mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            newPost.child("Title").setValue(title_val);
+                            newPost.child("Desc").setValue(desc_val);
+                            newPost.child("image").setValue(downloadUrl.toString());
+                            //newPost.child("email").setValue(email);
+                            newPost.child("uid").setValue(uid);
+                            newPost.child("username").setValue(dataSnapshot.child("name").getValue()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        startActivity(new Intent(PostActivity.this,HomeActivity.class));
+
+                                    }
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                     mProgress.dismiss();
 
-                    startActivity(new Intent(PostActivity.this,HomeActivity.class));
                 }
             });
         }

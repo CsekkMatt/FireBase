@@ -36,7 +36,7 @@
         android:layout_alignTop="@+id/searchField"
         android:layout_marginStart="19dp"
         android:layout_toEndOf="@+id/searchField"
-        android:background="@color/colorPrimary"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/todo"
         app:srcCompat="@drawable/search" />
 

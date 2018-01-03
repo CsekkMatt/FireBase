@@ -9,16 +9,19 @@ import android.widget.TextView;
  */
 
 public class Post {
-    private String Desc, Title, image;
+    private String Desc, Title, image,uid,username;
 
     public Post() {
 
     }
 
-    public Post(String desc, String title, String image) {
+    public Post(String desc, String title, String image,String uid,String username) {
         Desc = desc;
         Title = title;
         this.image = image;
+        this.uid  = uid;
+        this.username = username;
+
     }
 
     public String getTitle() {
@@ -44,6 +47,25 @@ public class Post {
     public void setImage(String image) {
         this.image = image;
     }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+
 }
+
 
 

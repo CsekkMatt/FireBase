@@ -33,6 +33,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
 
+    private DatabaseReference mDatabaseUsers;
+    private DatabaseReference getmDatabaseCurrentUsers;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,11 @@ public class HomeActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Post");
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("Users");
+        getmDatabaseCurrentUsers = FirebaseDatabase.getInstance().getReference().child("Post");
+
+        mDatabaseUsers.keepSynced(true);
+        getmDatabaseCurrentUsers.keepSynced(true);
 
         mSearchField = (EditText) findViewById(R.id.searchField);
         mImageButton = (ImageButton)findViewById(R.id.imgBtn);
@@ -108,18 +116,23 @@ public class HomeActivity extends AppCompatActivity {
         MenuItem addPost = menu.findItem(R.id.action_add);
         MenuItem logOut = menu.findItem(R.id.action_logout);
         MenuItem logIn = menu.findItem(R.id.action_login);
+        MenuItem editPost = menu.findItem(R.id.edit_post);
+        MenuItem editProfile = menu.findItem(R.id.edit_profile);
+
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             addPost.setVisible(false);
             logIn.setVisible(true);
             logOut.setVisible(false);
-
+            editPost.setVisible(false);
+            editProfile.setVisible(false);
 
         }
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
             logIn.setVisible(false);
+            editPost.setVisible(false);
+            editProfile.setVisible(true);
 
         }
-
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -136,6 +149,10 @@ public class HomeActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.action_login){
             startActivity(new Intent(HomeActivity.this,LoginActivity.class));
         }
+        if(item.getItemId() == R.id.edit_profile){
+            startActivity(new Intent(HomeActivity.this,ProfileActivity.class));
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -180,7 +197,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public static class BlogViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class BlogViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
 
@@ -207,10 +224,7 @@ public class HomeActivity extends AppCompatActivity {
 
         }
 
-        @Override
-        public void onClick(View v) {
 
-        }
     }
 }
 

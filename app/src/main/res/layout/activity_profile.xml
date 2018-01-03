@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.petok.firebase.ProfileActivity">
+
+    <ImageButton
+        android:id="@+id/setProfilePicture"
+        android:layout_width="155dp"
+        android:layout_height="190dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/defaultimage"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <EditText
+        android:id="@+id/setupNameField"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="Your name..."
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/setProfilePicture"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <Button
+        android:id="@+id/setupSubmitBtn"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimary"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/setupPhoneNumberField"
+        tools:layout_editor_absoluteX="8dp" />
+
+    <EditText
+        android:id="@+id/setupPhoneNumberField"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:ems="10"
+        android:hint="Your phone number..."
+        android:inputType="phone"
+        app:layout_constraintTop_toBottomOf="@+id/setupNameField"
+        tools:layout_editor_absoluteX="16dp" />
+
+</android.support.constraint.ConstraintLayout>
